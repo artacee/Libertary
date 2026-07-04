@@ -1,5 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <rect width="512" height="512" rx="100" fill="#0b0b14"/>
-    <path d="M128 128 h 256 v 256 h -256 z" fill="none" stroke="#f0a500" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M128 200 h 256 M 128 280 h 128" stroke="#f0a500" stroke-width="24" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Background with dark retro warmth -->
+  <rect width="512" height="512" rx="108" fill="#181316"/>
+  
+  <!-- Subtle inner vintage border ring -->
+  <rect x="24" y="24" width="464" height="464" rx="84" fill="none" stroke="#d4a373" stroke-width="6" opacity="0.3"/>
+
+  <!-- Wooden Shelf -->
+  <path d="M 64 390 L 448 390 L 448 414 Q 448 424 438 424 L 74 424 Q 64 424 64 414 Z" fill="#4a2e1b"/>
+  <rect x="64" y="382" width="384" height="10" rx="3" fill="#6b4428"/>
+  <line x1="64" y1="392" x2="448" y2="392" stroke="#d4a373" stroke-width="2" opacity="0.4"/>
+
+  <!-- Retro Book Spines on Shelf -->
+
+  <!-- Book 1: Deep Crimson / Gold -->
+  <rect x="96" y="160" width="46" height="222" rx="4" fill="#8b263e"/>
+  <line x1="96" y1="184" x2="142" y2="184" stroke="#d4a373" stroke-width="4"/>
+  <line x1="96" y1="192" x2="142" y2="192" stroke="#d4a373" stroke-width="2"/>
+  <line x1="96" y1="350" x2="142" y2="350" stroke="#d4a373" stroke-width="4"/>
+  <rect x="108" y="220" width="22" height="40" rx="2" fill="#d4a373" opacity="0.8"/>
+
+  <!-- Book 2: Vintage Forest Green -->
+  <rect x="146" y="130" width="52" height="252" rx="5" fill="#1b4931"/>
+  <line x1="146" y1="156" x2="198" y2="156" stroke="#e0c088" stroke-width="4"/>
+  <circle cx="172" cy="200" r="10" fill="none" stroke="#e0c088" stroke-width="3"/>
+  <line x1="146" y1="356" x2="198" y2="356" stroke="#e0c088" stroke-width="4"/>
+
+  <!-- Book 3: Dark Ochre / Amber -->
+  <rect x="202" y="180" width="44" height="202" rx="4" fill="#c67d0a"/>
+  <line x1="202" y1="202" x2="246" y2="202" stroke="#fff1d0" stroke-width="3"/>
+  <line x1="202" y1="358" x2="246" y2="358" stroke="#fff1d0" stroke-width="3"/>
+
+  <!-- Book 4: Midnight Royal Blue -->
+  <rect x="250" y="110" width="56" height="272" rx="6" fill="#1e3a5f"/>
+  <line x1="250" y1="138" x2="306" y2="138" stroke="#f0a500" stroke-width="5"/>
+  <path d="M 278 180 L 288 195 L 268 195 Z" fill="#f0a500"/>
+  <rect x="264" y="210" width="28" height="60" rx="3" fill="none" stroke="#f0a500" stroke-width="2"/>
+  <line x1="250" y1="354" x2="306" y2="354" stroke="#f0a500" stroke-width="5"/>
+
+  <!-- Book 5: Warm Terracotta (Tilted / Leaning) -->
+  <g transform="translate(306, 382) rotate(14) translate(-306, -382)">
+    <rect x="312" y="170" width="44" height="212" rx="4" fill="#a84227"/>
+    <line x1="312" y1="194" x2="356" y2="194" stroke="#ffd700" stroke-width="4"/>
+    <line x1="312" y1="350" x2="356" y2="350" stroke="#ffd700" stroke-width="4"/>
+  </g>
+
+  <!-- Book 6: Deep Violet (Leaning further) -->
+  <g transform="translate(350, 382) rotate(18) translate(-350, -382)">
+    <rect x="356" y="190" width="42" height="192" rx="4" fill="#4a2545"/>
+    <line x1="356" y1="210" x2="398" y2="210" stroke="#d4a373" stroke-width="3"/>
+    <line x1="356" y1="358" x2="398" y2="358" stroke="#d4a373" stroke-width="3"/>
+  </g>
 </svg>

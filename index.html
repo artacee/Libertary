@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libertary — Immersive PDF Ebook Viewer</title>
+    <meta name="description" content="A premium PDF ebook reader with hyper-realistic page flip animation">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf_viewer.min.css">
+    
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+
+    <!-- ======== LANDING / LIBRARY SCREEN ======== -->
+    <main id="landing-screen" class="screen active">
+        <!-- State A: Welcome View (No Vault Selected) -->
+        <div id="welcome-view" class="welcome-view">
+            <div class="landing-content">
+                <div class="app-branding">
+                    <div class="app-icon">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="10" width="28" height="60" rx="3" fill="url(#bookGrad1)" stroke="var(--accent)" stroke-width="1.5"/>
+                            <rect x="44" y="10" width="28" height="60" rx="3" fill="url(#bookGrad2)" stroke="var(--accent)" stroke-width="1.5"/>
+                            <path d="M36 12 C36 12 40 15 40 40 C40 65 36 68 36 68" stroke="var(--accent)" stroke-width="2" opacity="0.6"/>
+                            <path d="M44 12 C44 12 40 15 40 40 C40 65 44 68 44 68" stroke="var(--accent)" stroke-width="2" opacity="0.6"/>
+                            <line x1="14" y1="24" x2="30" y2="24" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
+                            <line x1="14" y1="30" x2="28" y2="30" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
+                            <line x1="14" y1="36" x2="30" y2="36" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
+                            <line x1="50" y1="24" x2="66" y2="24" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
+                            <line x1="50" y1="30" x2="64" y2="30" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
+                            <line x1="50" y1="36" x2="66" y2="36" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
+                            <defs>
+                                <linearGradient id="bookGrad1" x1="8" y1="10" x2="36" y2="70">
+                                    <stop offset="0%" stop-color="rgba(240,165,0,0.15)"/>
+                                    <stop offset="100%" stop-color="rgba(240,165,0,0.05)"/>
+                                </linearGradient>
+                                <linearGradient id="bookGrad2" x1="44" y1="10" x2="72" y2="70">
+                                    <stop offset="0%" stop-color="rgba(240,165,0,0.15)"/>
+                                    <stop offset="100%" stop-color="rgba(240,165,0,0.05)"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h1 class="app-title">Libertary</h1>
+                    <p class="app-subtitle">Immersive PDF reading, the way books were meant to be.</p>
+                </div>
+
+                <div class="welcome-actions">
+                    <button id="welcome-select-btn" class="btn btn-primary btn-large">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px; vertical-align: middle;">
+                            <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+                        </svg>
+                        <span>Open Vault Folder</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- State B: Library Grid View (Vault Selected) -->
+        <div id="library-view" class="library-view hidden">
+            <header class="library-topbar">
+                <div class="library-info">
+                    <h2 id="library-name" class="library-name">My Vault</h2>
+                    <span id="library-count" class="library-count">0 Books</span>
+                </div>
+                <div class="library-actions">
+                    <button id="change-vault-btn" class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
+                            <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+                        </svg>
+                        Change Vault
+                    </button>
+                </div>
+            </header>
+            
+            <div id="library-sections" class="library-sections">
+                <!-- Dynamically populated categories: Recently Read, Favourites, By Title -->
+            </div>
+            
+            <div id="library-empty" class="library-empty">
+                <div class="empty-icon">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+                        <line x1="12" y1="11" x2="12" y2="17"/>
+                        <line x1="9" y1="14" x2="15" y2="14"/>
+                    </svg>
+                </div>
+                <h3>No eBooks found</h3>
+                <p>Place your PDF files in the vault folder to see them here.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ======== READER SCREEN ======== -->
+    <div id="reader-screen" class="screen">
+
+        <!-- Drawing Tools Sidebar (Left Edge) -->
+        <div id="tools-sidebar-hover-zone" class="tools-hover-zone"></div>
+        <aside id="tools-sidebar" class="tools-sidebar">
+            <button id="tool-laser-btn" class="btn-icon tool-btn" title="Laser Pointer" data-tool="laser">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4"/>
+                    <line x1="12" y1="2" x2="12" y2="4"/>
+                    <line x1="12" y1="20" x2="12" y2="22"/>
+                    <line x1="2" y1="12" x2="4" y2="12"/>
+                    <line x1="20" y1="12" x2="22" y2="12"/>
+                </svg>
+            </button>
+            <button id="tool-highlight-btn" class="btn-icon tool-btn" title="Highlighter" data-tool="highlight">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 11l-6 6v3h9l3-3"/>
+                    <path d="M22 12l-4.6 4.6a2 2 0 01-2.8 0l-5.2-5.2a2 2 0 010-2.8L14 4"/>
+                </svg>
+            </button>
+            <button id="tool-pen-btn" class="btn-icon tool-btn" title="Pen (Draw)" data-tool="pen">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                    <path d="M2 2l7.586 7.586"/>
+                    <circle cx="11" cy="11" r="2"/>
+                </svg>
+            </button>
+            <button id="tool-eraser-btn" class="btn-icon tool-btn" title="Eraser" data-tool="eraser">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 20H7L3 16C2.5 15.5 2.5 14.5 3 14L13 4C13.5 3.5 14.5 3.5 15 4L20 9C20.5 9.5 20.5 10.5 20 11L11 20"/>
+                    <path d="M17 14L7 20"/>
+                </svg>
+            </button>
+        </aside>
+
+        <!-- Navigation & Notes Sidebar (Right Edge) -->
+        <div id="notes-toggle-hover-zone" class="tools-hover-zone tools-hover-zone-right"></div>
+        <aside id="notes-toggle-sidebar" class="tools-sidebar tools-sidebar-right-toggle">
+            <button id="back-to-library-btn" class="btn-icon tool-btn" title="Back to Library">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <button id="toc-btn" class="btn-icon tool-btn" title="Table of Contents">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+                </svg>
+            </button>
+            <div class="toolbar-sep" style="width: 100%; height: 1px; margin: 4px 0; background: var(--border-subtle);"></div>
+            <button id="notes-btn" class="btn-icon tool-btn" title="Notebook">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+            </button>
+        </aside>
+
+        <!-- Table of Contents Sidebar -->
+        <aside id="toc-sidebar" class="sidebar sidebar-right">
+            <div class="sidebar-header">
+                <h2>Contents</h2>
+                <button id="close-toc-btn" class="btn-icon" aria-label="Close sidebar">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <nav id="toc-list" class="toc-list"></nav>
+            <div id="toc-empty" class="toc-empty">
+                <p>No table of contents found in this PDF.</p>
+            </div>
+        </aside>
+
+        <!-- Notes Sidebar -->
+        <aside id="notes-sidebar" class="sidebar sidebar-right">
+            <div class="sidebar-header">
+                <h2>My Notes</h2>
+                <div style="display:flex; gap: 8px;">
+                    <button id="export-notes-btn" class="btn-icon" title="Export Notes as Markdown">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                        </svg>
+                    </button>
+                    <button id="close-notes-btn" class="btn-icon" aria-label="Close sidebar">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="notes-search-container">
+                <input type="text" id="notes-search" placeholder="Search notes..." aria-label="Search notes">
+            </div>
+            <div id="notes-list" class="notes-list">
+                <!-- Notes will be injected here -->
+            </div>
+            <div id="notes-composer" class="notes-composer">
+                <h3 id="composer-page-label">Add Note for Page 1</h3>
+                <textarea id="note-input" placeholder="Type a note..."></textarea>
+                <div class="composer-actions">
+                    <button id="save-note-btn" class="btn btn-primary btn-sm">Save Note</button>
+                </div>
+            </div>
+        </aside>
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+        <!-- Book Reading Area -->
+        <div id="book-area" class="book-area">
+            <canvas id="laser-canvas" class="laser-canvas"></canvas>
+            <div id="page-stack-left" class="page-stack page-stack-left"></div>
+            <div id="book" class="book-container"></div>
+            <div id="page-stack-right" class="page-stack page-stack-right"></div>
+        </div>
+
+        <!-- Toolbar -->
+        <div id="toolbar" class="toolbar">
+            <div class="toolbar-group nav-group">
+                <button id="prev-btn" class="btn-icon" title="Previous (←)">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <div class="page-indicator">
+                    <input type="number" id="page-input" min="1" value="1" aria-label="Current page">
+                    <span class="page-sep">/</span>
+                    <span id="total-pages">0</span>
+                </div>
+                <button id="next-btn" class="btn-icon" title="Next (→)">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+            <div class="toolbar-sep"></div>
+            <div class="toolbar-group">
+                <button id="zoom-out-btn" class="btn-icon" title="Zoom out">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+                <span id="zoom-level" class="zoom-display">100%</span>
+                <button id="zoom-in-btn" class="btn-icon" title="Zoom in">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+            <div class="toolbar-sep"></div>
+            <div class="toolbar-group">
+                <button id="fullscreen-btn" class="btn-icon" title="Toggle fullscreen">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progress-bar" class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- ======== RESUME MODAL ======== -->
+    <div id="resume-modal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-icon">📖</div>
+            <h3>Welcome back!</h3>
+            <p>Continue reading from page <strong id="resume-page-num">1</strong>?</p>
+            <div class="modal-actions">
+                <button id="resume-yes-btn" class="btn btn-primary">Resume Reading</button>
+                <button id="resume-no-btn" class="btn btn-secondary">Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== CONFIRM DELETE MODAL ======== -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-icon" style="color: #ff5252;">⚠️</div>
+            <h3>Delete Note?</h3>
+            <p>Are you sure you want to permanently delete this note?</p>
+            <div class="modal-actions">
+                <button id="confirm-delete-yes-btn" class="btn btn-primary" style="background:#ff5252; color:white; border-color:#ff5252;">Delete</button>
+                <button id="confirm-delete-no-btn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== LOADING OVERLAY ======== -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Preparing your book…</p>
+    </div>
+
+
+    <!-- Load StPageFlip -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
+    <!-- App Logic -->
+    <script src="annotations.js"></script>
+    <script type="module" src="app.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('ServiceWorker registered'))
+                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+            });
+        }
+    </script>
+</body>
+</html>

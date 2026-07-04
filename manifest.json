@@ -1,0 +1,17 @@
+{
+  "name": "Libertary",
+  "short_name": "Libertary",
+  "description": "A premium PDF ebook reader with hyper-realistic page flip animation.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b0b14",
+  "theme_color": "#0b0b14",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
